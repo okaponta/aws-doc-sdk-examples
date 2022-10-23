@@ -179,7 +179,7 @@ public class DynamoDBTest {
 
     @Test
     @Order(11)
-   public void SycnPagination(){
+   public void SyncPagination(){
 
         SyncPagination.manualPagination(ddb);
         SyncPagination.autoPagination(ddb);

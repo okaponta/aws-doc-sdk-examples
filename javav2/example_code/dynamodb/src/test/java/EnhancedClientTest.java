@@ -20,7 +20,6 @@ public class EnhancedClientTest {
     private static DynamoDbClient ddb;
     private static DynamoDbEnhancedClient enhancedClient;
     private static String enhancedTableName = "";
-    private static String enhancedTableKey  = "";
     private static String enhancedTestRegion = "";
 
     @BeforeAll
@@ -37,7 +36,6 @@ public class EnhancedClientTest {
             //load a properties file from class path, inside static method
             prop.load(input);
             enhancedTableName = prop.getProperty("enhancedTableName");
-            enhancedTableKey = prop.getProperty("enhancedTableKey");
             enhancedTestRegion = prop.getProperty("enhancedTestRegion");
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -81,6 +79,15 @@ public class EnhancedClientTest {
 
     @Test
     @Order(4)
+    public void DeleteItem() {
+
+        //Table exists as we used Waiters
+        EnhancedDeleteItem.deleteRecord(enhancedClient);
+        System.out.println("\n Test 4 passed");
+    }
+
+    @Test
+    @Order(5)
     public void PutBatchItems() {
 
         // create and seed the Music table to demonstrate that batching calls
@@ -92,51 +99,51 @@ public class EnhancedClientTest {
 
 
        EnhancedBatchWriteItems.putBatchRecords(enhancedClient);
-       System.out.println("\n Test 4 passed");
+       System.out.println("\n Test 5 passed");
 
        ddbTest.DeleteTable();
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void queryWithFilter(){
         Integer customerCount = EnhancedQueryRecordsWithFilter.queryTableFilter(enhancedClient);
         Assertions.assertEquals(1, customerCount);
-        System.out.println("\n Test 5 passed");
+        System.out.println("\n Test 6 passed");
     }
 
 
     @Test
-    @Order(6)
+    @Order(7)
     public void GetItem() {
 
       String result = EnhancedGetItem.getItem(enhancedClient);
       assertTrue(!result.isEmpty());
-      System.out.println("\n Test 6 passed");
-    }
-
-    @Test
-    @Order(7)
-    public void QueryRecords() {
-
-        String result = EnhancedQueryRecords.queryTable(enhancedClient);
-        assertTrue(!result.isEmpty());
-        System.out.println("\n Test 7passed");
+      System.out.println("\n Test 7 passed");
     }
 
     @Test
     @Order(8)
-    public void ScanRecords() {
+    public void QueryRecords() {
 
-       EnhancedScanRecords.scan(enhancedClient);
-       System.out.println("\n Test 8 passed");
+        String result = EnhancedQueryRecords.queryTable(enhancedClient);
+        assertTrue(!result.isEmpty());
+        System.out.println("\n Test 8 passed");
     }
 
     @Test
     @Order(9)
+    public void ScanRecords() {
+
+       EnhancedScanRecords.scan(enhancedClient);
+       System.out.println("\n Test 9 passed");
+    }
+
+    @Test
+    @Order(10)
     public void DeleteTable() {
 
        DeleteTable.deleteDynamoDBTable(ddb,enhancedTableName);
-       System.out.println("\n Test 9 passed");
+       System.out.println("\n Test 10 passed");
     }
 }
